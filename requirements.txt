@@ -1,0 +1,15 @@
+# Pinned, CPU-first dependencies. Optional GPU extras (FlashAttention, mamba-ssm) are documented in README.
+numpy==1.26.4
+requests==2.32.3
+tqdm==4.66.4
+PyYAML==6.0.1
+sentencepiece==0.2.0
+zstandard==0.22.0
+regex==2024.5.15
+
+# PyTorch (CPU wheels by default). For CUDA, install the appropriate wheel from PyTorch.
+torch==2.4.1
+
+# Wikipedia dump parsing / wikitext stripping (used by scripts/extract_wiki.py).
+mwxml==0.3.3
+mwparserfromhell==0.6.6

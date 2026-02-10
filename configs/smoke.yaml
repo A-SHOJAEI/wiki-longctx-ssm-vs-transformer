@@ -1,0 +1,87 @@
+seed: 1234
+
+data:
+  shards_dir: data/smoke/shards
+  tokenizer_model: data/smoke/tokenizer/sp.model
+  # When boundary markers are "disabled" for an ablation, we map <DOC> -> <eos> at runtime.
+  doc_token: "<DOC>"
+
+train:
+  device: auto          # auto|cpu|cuda
+  dtype: fp32           # fp32|fp16|bf16
+  deterministic: false  # set true for stricter determinism (may slow down / disallow some ops)
+
+  seq_len: 128
+  batch_size: 8
+  grad_accum_steps: 1
+
+  max_steps: 40
+  lr: 0.0003
+  weight_decay: 0.1
+  warmup_steps: 5
+  max_grad_norm: 1.0
+
+  log_every: 5
+  ckpt_every: 20
+
+eval:
+  # Keep smoke evaluation small and fast.
+  perplexity:
+    max_batches: 10
+  suffix_id:
+    buckets: [32, 64, 112]
+    suffix_len: 16
+    num_examples: 60
+    num_distractors: 3
+
+experiments:
+  # Baseline: Transformer LM (packed sequences, doc-boundary markers + reset masks enabled)
+  - name: smoke_transformer_packed
+    run_dir: runs/smoke_transformer_packed
+    model:
+      type: transformer
+      vocab_size: 8000
+      d_model: 128
+      n_layers: 2
+      n_heads: 4
+      d_ff: 512
+      dropout: 0.1
+      use_flash_attn: false
+    loader:
+      packing: packed              # packed|no_packing
+      boundary_markers: true       # boundary marker token is used as-is
+      reset_masks: true            # enforce no cross-doc leakage (Transformer: segment attention mask)
+
+  # Proposed: Mamba/SSM (uses mamba-ssm if installed; otherwise a small SSM fallback)
+  - name: smoke_mamba_packed
+    run_dir: runs/smoke_mamba_packed
+    model:
+      type: mamba
+      vocab_size: 8000
+      d_model: 128
+      n_layers: 2
+      dropout: 0.0
+      mamba_d_state: 16
+      mamba_d_conv: 4
+      mamba_expand: 2
+    loader:
+      packing: packed
+      boundary_markers: true
+      reset_masks: true
+
+  # Ablation (exactly as in plan): no packing vs packed sequences.
+  - name: smoke_transformer_no_packing
+    run_dir: runs/smoke_transformer_no_packing
+    model:
+      type: transformer
+      vocab_size: 8000
+      d_model: 128
+      n_layers: 2
+      n_heads: 4
+      d_ff: 512
+      dropout: 0.1
+      use_flash_attn: false
+    loader:
+      packing: no_packing
+      boundary_markers: true
+      reset_masks: true

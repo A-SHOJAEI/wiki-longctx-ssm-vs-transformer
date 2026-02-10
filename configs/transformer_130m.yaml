@@ -1,0 +1,45 @@
+# Reference config for a ~130M decoder-only Transformer LM.
+# Not used by default `make all` (which uses configs/smoke.yaml).
+
+seed: 1234
+
+data:
+  shards_dir: data/shards
+  tokenizer_model: data/tokenizer/sp.model
+  doc_token: "<DOC>"
+
+train:
+  device: cuda
+  dtype: bf16
+  deterministic: false
+
+  seq_len: 4096
+  batch_size: 1
+  grad_accum_steps: 8
+
+  max_steps: 10000
+  lr: 0.0002
+  weight_decay: 0.1
+  warmup_steps: 500
+  max_grad_norm: 1.0
+
+  log_every: 20
+  ckpt_every: 500
+
+experiments:
+  - name: transformer_130m_flash
+    run_dir: runs/transformer_130m_flash
+    model:
+      type: transformer
+      vocab_size: 32000
+      d_model: 768
+      n_layers: 12
+      n_heads: 12
+      d_ff: 3072
+      dropout: 0.1
+      use_flash_attn: true
+    loader:
+      packing: packed
+      boundary_markers: true
+      reset_masks: false  # enable for the doc-leakage ablation (slower)
+

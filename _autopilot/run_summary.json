@@ -1,0 +1,94 @@
+{
+  "config_path": "configs/smoke.yaml",
+  "device": "cuda",
+  "dtype": "torch.float32",
+  "generated_at_utc": "2026-02-10 05:02:10 UTC",
+  "runs": [
+    {
+      "model_type": "transformer",
+      "name": "smoke_transformer_packed",
+      "perplexity": {
+        "batches": 10,
+        "nll": 5.685878658294678,
+        "ppl": 294.6766514169715
+      },
+      "run_dir": "runs/smoke_transformer_packed",
+      "suffix_id": {
+        "112": {
+          "accuracy": 0.48333333333333334,
+          "ctx_len": 112,
+          "examples": 60
+        },
+        "32": {
+          "accuracy": 0.3,
+          "ctx_len": 32,
+          "examples": 60
+        },
+        "64": {
+          "accuracy": 0.43333333333333335,
+          "ctx_len": 64,
+          "examples": 60
+        }
+      },
+      "train_summary_path": "runs/smoke_transformer_packed/train_summary.json"
+    },
+    {
+      "model_type": "mamba",
+      "name": "smoke_mamba_packed",
+      "perplexity": {
+        "batches": 10,
+        "nll": 7.719570779800415,
+        "ppl": 2251.9927723095575
+      },
+      "run_dir": "runs/smoke_mamba_packed",
+      "suffix_id": {
+        "112": {
+          "accuracy": 0.48333333333333334,
+          "ctx_len": 112,
+          "examples": 60
+        },
+        "32": {
+          "accuracy": 0.26666666666666666,
+          "ctx_len": 32,
+          "examples": 60
+        },
+        "64": {
+          "accuracy": 0.4,
+          "ctx_len": 64,
+          "examples": 60
+        }
+      },
+      "train_summary_path": "runs/smoke_mamba_packed/train_summary.json"
+    },
+    {
+      "model_type": "transformer",
+      "name": "smoke_transformer_no_packing",
+      "perplexity": {
+        "batches": 10,
+        "nll": 5.8316765308380125,
+        "ppl": 340.92977949316315
+      },
+      "run_dir": "runs/smoke_transformer_no_packing",
+      "suffix_id": {
+        "112": {
+          "accuracy": 0.5166666666666667,
+          "ctx_len": 112,
+          "examples": 60
+        },
+        "32": {
+          "accuracy": 0.31666666666666665,
+          "ctx_len": 32,
+          "examples": 60
+        },
+        "64": {
+          "accuracy": 0.4666666666666667,
+          "ctx_len": 64,
+          "examples": 60
+        }
+      },
+      "train_summary_path": "runs/smoke_transformer_no_packing/train_summary.json"
+    }
+  ],
+  "_autopilot_runtime_seconds": 6.23,
+  "_autopilot_ran_at_utc": "2026-02-10 05:02:10 UTC"
+}

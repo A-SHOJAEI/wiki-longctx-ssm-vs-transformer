@@ -1,0 +1,8 @@
+- `AGENTS.md` wasn’t present in `/home/alireza/research-autopilot/generated_projects/wiki-longctx-ssm-vs-transformer`, so there were no additional local agent instructions to apply.
+- Fixed the SentencePiece crash by editing `scripts/train_tokenizer.py`:
+  - Removed the unsupported trainer flag `--random_seed=...` (sentencepiece==0.2.0 errors with `unknown field name "random_seed" in TrainerSpec`).
+  - Made tokenizer training deterministic without relying on a seed by disabling sampling/shuffling: set `--input_sentence_size=0` and `--shuffle_input_sentence=false`.
+
+After this change, `make all` succeeds end-to-end and produces:
+- `artifacts/results.json`
+- `artifacts/report.md`

@@ -1,0 +1,45 @@
+# Reference config for a ~130M Mamba/SSM LM.
+# Not used by default `make all` (which uses configs/smoke.yaml).
+
+seed: 1234
+
+data:
+  shards_dir: data/shards
+  tokenizer_model: data/tokenizer/sp.model
+  doc_token: "<DOC>"
+
+train:
+  device: cuda
+  dtype: bf16
+  deterministic: false
+
+  seq_len: 4096
+  batch_size: 2
+  grad_accum_steps: 4
+
+  max_steps: 10000
+  lr: 0.0002
+  weight_decay: 0.1
+  warmup_steps: 500
+  max_grad_norm: 1.0
+
+  log_every: 20
+  ckpt_every: 500
+
+experiments:
+  - name: mamba_130m
+    run_dir: runs/mamba_130m
+    model:
+      type: mamba
+      vocab_size: 32000
+      d_model: 768
+      n_layers: 24
+      dropout: 0.0
+      mamba_d_state: 64
+      mamba_d_conv: 4
+      mamba_expand: 2
+    loader:
+      packing: packed
+      boundary_markers: true
+      reset_masks: false  # enable for the doc-leakage ablation (slower)
+

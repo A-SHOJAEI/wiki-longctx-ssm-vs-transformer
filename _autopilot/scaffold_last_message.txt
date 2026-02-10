@@ -1,0 +1,33 @@
+Implemented a complete standalone repo scaffold in `/home/alireza/research-autopilot/generated_projects/wiki-longctx-ssm-vs-transformer` based on `_autopilot/project_plan.json`.
+
+Key pieces:
+- Venv bootstrap compliant with Ubuntu PEP 668 + missing `ensurepip`: `scripts/bootstrap_venv.sh` (uses `python3 -m venv --without-pip .venv` + downloads `get-pip.py`, then installs via `.venv/bin/pip`)
+- Make targets: `Makefile` with `setup`, `data`, `train`, `eval`, `report`, `all`
+- Pinned deps: `requirements.txt` (CPU-first; GPU extras optional)
+- Smoke config + fast end-to-end run: `configs/smoke.yaml` (baseline + proposed + ablation)
+- Data pipeline:
+  - Download + checksum verify (when available): `scripts/download_wiki.py`
+  - Extract/clean + optional SimHash dedup: `scripts/extract_wiki.py`
+  - Train SentencePiece: `scripts/train_tokenizer.py`
+  - Tokenize + shard: `scripts/tokenize_shard.py`
+  - Smoke dataset builder: `scripts/make_smoke_data.py`
+- Training (PyTorch) with reproducibility controls + manifests + checkpoints:
+  - Entry: `train.py`
+  - Core loop: `src/wiki_lm/train_loop.py`
+  - Models: `src/wiki_lm/models/transformer.py`, `src/wiki_lm/models/mamba_lm.py` (uses `mamba-ssm` if available, otherwise `src/wiki_lm/models/ssm_fallback.py`)
+  - Seed/determinism/device handling: `src/wiki_lm/utils/repro.py`
+- Evaluation producing required artifacts:
+  - Entry: `evaluate.py` writes `artifacts/results.json`
+  - Perplexity: `src/wiki_lm/eval/perplexity.py`
+  - Long-range metric (suffix identification vs context buckets): `src/wiki_lm/eval/suffix_id.py`
+  - Report: `tools/make_report.py` writes `artifacts/report.md`
+
+Default runnable flow (smoke):
+```bash
+make setup
+make all
+```
+
+Primary outputs:
+- `artifacts/results.json`
+- `artifacts/report.md`
