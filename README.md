@@ -68,24 +68,24 @@ Reference (not executed by default): `configs/transformer_130m.yaml`, `configs/m
 
 Exact artifacts:
 
-- machine-readable: `artifacts/results.json` (generated `2026-02-10 05:02:10 UTC`, device `cuda`, dtype `torch.float32`)
+- machine-readable: `artifacts/results.json` (generated `2026-02-20 06:26:06 UTC`, device `cuda`, dtype `torch.float32`)
 - human report: `artifacts/report.md`
 
 Validation perplexity (see `artifacts/report.md` section `## Validation Perplexity`):
 
 | run | model | val_nll | val_ppl |
 | --- | --- | --- | --- |
-| smoke_transformer_packed | transformer | 5.6859 | 294.68 |
-| smoke_mamba_packed | mamba | 7.7196 | 2251.99 |
-| smoke_transformer_no_packing | transformer | 5.8317 | 340.93 |
+| smoke_transformer_packed | transformer | 5.7704 | 320.65 |
+| smoke_mamba_packed | mamba | 7.8316 | 2518.92 |
+| smoke_transformer_no_packing | transformer | 5.8402 | 343.84 |
 
 Long-range suffix identification accuracy (see `artifacts/report.md` section `## Long-Range Suffix Identification`):
 
 | run | acc@32 | acc@64 | acc@112 |
 | --- | --- | --- | --- |
-| smoke_transformer_packed | 0.300 | 0.433 | 0.483 |
-| smoke_mamba_packed | 0.267 | 0.400 | 0.483 |
-| smoke_transformer_no_packing | 0.317 | 0.467 | 0.517 |
+| smoke_transformer_packed | 0.400 | 0.367 | 0.633 |
+| smoke_mamba_packed | 0.350 | 0.500 | 0.583 |
+| smoke_transformer_no_packing | 0.350 | 0.383 | 0.633 |
 
 ## Repro Instructions
 

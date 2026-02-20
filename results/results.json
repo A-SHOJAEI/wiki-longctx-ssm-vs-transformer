@@ -1,0 +1,61 @@
+{
+  "project": "wiki-longctx-ssm-vs-transformer",
+  "config": "smoke",
+  "dataset": "synthetic_smoke (73 docs train, ~2k tokens val/test)",
+  "experiments": {
+    "smoke_transformer_packed": {
+      "model_type": "transformer",
+      "d_model": 128,
+      "n_layers": 2,
+      "packing": "packed",
+      "train_steps": 40,
+      "final_train_loss": 5.9788,
+      "train_seconds": 0.923,
+      "perplexity": {
+        "nll": 5.7704,
+        "ppl": 320.65
+      },
+      "suffix_id": {
+        "ctx_32": {"accuracy": 0.4000, "examples": 60},
+        "ctx_64": {"accuracy": 0.3667, "examples": 60},
+        "ctx_112": {"accuracy": 0.6333, "examples": 60}
+      }
+    },
+    "smoke_mamba_packed": {
+      "model_type": "mamba",
+      "d_model": 128,
+      "n_layers": 2,
+      "packing": "packed",
+      "train_steps": 40,
+      "final_train_loss": 7.8551,
+      "train_seconds": 0.390,
+      "perplexity": {
+        "nll": 7.8316,
+        "ppl": 2518.92
+      },
+      "suffix_id": {
+        "ctx_32": {"accuracy": 0.3500, "examples": 60},
+        "ctx_64": {"accuracy": 0.5000, "examples": 60},
+        "ctx_112": {"accuracy": 0.5833, "examples": 60}
+      }
+    },
+    "smoke_transformer_no_packing": {
+      "model_type": "transformer",
+      "d_model": 128,
+      "n_layers": 2,
+      "packing": "no_packing",
+      "train_steps": 40,
+      "final_train_loss": 5.7420,
+      "train_seconds": 0.500,
+      "perplexity": {
+        "nll": 5.8402,
+        "ppl": 343.84
+      },
+      "suffix_id": {
+        "ctx_32": {"accuracy": 0.3500, "examples": 60},
+        "ctx_64": {"accuracy": 0.3833, "examples": 60},
+        "ctx_112": {"accuracy": 0.6333, "examples": 60}
+      }
+    }
+  }
+}
